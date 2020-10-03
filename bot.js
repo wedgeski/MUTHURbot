@@ -23,23 +23,10 @@ client.on('message', msg => {
   } else if (args[0] === "!roll") {
     cmdRoll.roll(msg, args.splice(1));
   } else if (msg.content.substr(0, 5) === "!init") {
-    // !init roll
-    // Resets the initiative of all agents (PC/NPC/monster) currently 
-    // in the !roster, and lists the initiative
     if (args[1] === 'roll') {
       cmdInit.roll(msg);
     }
   } else if (args[0] === "!roster") {
-    // !roster add <name>
-    // Adds the named actor to the current roster
-    // !roster add 
-    // Causes MUTHUR to list available monsters, from which to 
-    // select a monster to add
-    // !roster list
-    // Lists the current roster
-    // !roster remove
-    // Causes MUTHUR to list the current roster, from which to 
-    // select an agent to remove
     if (args[1] === 'add' && args.length === 3) {
       cmdRoster.add(msg, args.splice(2));
     } else if (args[1] === 'add' && args.length === 2) {
