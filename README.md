@@ -29,7 +29,7 @@ Once you've cloned the code, you'll need to do the following:
 ## Install dependencies
 Navigate to the code directory and enter the command:
 
-  `npm install`
+`npm install`
 
 This will install the MUTHURbot dependencies into the code directory.
 
@@ -37,9 +37,9 @@ This will install the MUTHURbot dependencies into the code directory.
 MUTHURbot expends to find a file '.env' in the code directory. The file 
 should have only one line and look like:
 
-  `DISCORD_TOKEN=<your bot token here>`
+`DISCORD_TOKEN=<your bot token here>`
 
-(ignore the leading whitespace). Use the Discord developer portal to create your 
+Use the Discord developer portal to create your 
 version of MUTHURbot and generate a bot token. There are many good instructional 
 sites on the internet for this!
 
@@ -52,9 +52,4 @@ out of respect for Free League copyright. However, you can generate your own
 dice images in a matter of minutes using the simplest of tools; at their most 
 basic, they are 64x64px JPEGs with the following naming conventions:
 
-  `assets/skill_1_64px.jpg`
-  `...`
-  `assets/skill_6_64px.jpg`
-  `assets/stress_1_64px.jpg`
-  `...`
-  `assets/stress_6_64px.jpg`
+`skill_[1-6]_64px.jpg` and `stress_[1-6]_64px.jpg`
