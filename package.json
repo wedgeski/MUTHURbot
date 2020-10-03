@@ -1,8 +1,8 @@
 {
-    "name": "MUTHURbot",
+    "name": "muthurbot",
     "version": "0.0.1",
     "description": "Discord Game Mother for the Free League RPG",
-    "main": "bot.js",
+    "main": "index.js",
     "author": "Neil Burton",
     "dependencies": {
         "canvas": "^2.6.1",

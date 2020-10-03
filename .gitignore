@@ -1,6 +1,7 @@
 #MUTHURbot specific
 assets/
 .env
+.randnotes
 
 # Logs
 logs
