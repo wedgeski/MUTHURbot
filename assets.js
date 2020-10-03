@@ -23,6 +23,6 @@ async function loadDiceImages() {
     //console.log(StressDiceImages);
 }
 
-exports.load = function() {
+exports.load = function () {
     loadDiceImages();
 }
