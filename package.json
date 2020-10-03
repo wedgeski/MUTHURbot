@@ -4,6 +4,7 @@
     "description": "Discord Game Mother for the Free League RPG",
     "main": "index.js",
     "author": "Neil Burton",
+    "license": "ISC",
     "dependencies": {
         "canvas": "^2.6.1",
         "discord-canvas": "^1.3.2",
