@@ -17,7 +17,7 @@ It supports a small set of commands including:
   * !roster reset             -- Remove all monsters from the roster
   * !init roll                -- Randomise all entries in the current roster
 
-# Code Usage
+# Usage
 These instructions assume you already have a working instance of Node.js and npm.
 
 Once you've cloned the code, you'll need to do the following:
@@ -29,7 +29,7 @@ Once you've cloned the code, you'll need to do the following:
 ## Install dependencies
 Navigate to the code directory and enter the command:
 
-  > npm install
+  `npm install`
 
 This will install the MUTHURbot dependencies into the code directory.
 
