@@ -1,3 +1,7 @@
+#MUTHURbot specific
+assets/
+.env
+
 # Logs
 logs
 *.log
