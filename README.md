@@ -9,6 +9,8 @@ It supports a small set of commands including:
 
 ## Example commands
 
+![Example dice roll](/images/roll_example.png)
+
   * !roll 4                   -- Roll 4 task dice
   * !roll 4+1                 -- Roll 4 task dice with 1 stress die
   * !roster                   -- List the current roster
