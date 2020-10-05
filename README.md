@@ -1,6 +1,8 @@
 # MUTHURbot
 This is a simple bot for helping to run the Free League 'Alien' RPG on a Discord server.
 
+![Example dice roll](/images/roll_example.png)
+
 It's designed for you to clone, modify (if you like), and run as your own instance. 
 Instructions on getting a Discord developer login and creating a simple chat bot are 
 easily found on the Discord developer site.
@@ -12,8 +14,6 @@ MUTHURbot supports a small set of commands including:
   * !init   -- Manage a simple initiative order for the current roster
 
 ## Example commands
-
-![Example dice roll](/images/roll_example.png)
 
   * !roll 4                   -- Roll 4 task dice
   * !roll 4+1                 -- Roll 4 task dice with 1 stress die
