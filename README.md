@@ -1,7 +1,11 @@
 # MUTHURbot
 This is a simple bot for helping to run the Free League 'Alien' RPG on a Discord server.
 
-It supports a small set of commands including:
+It's designed for you to clone, modify (if you like), and run as your own instance. 
+Instructions on getting a Discord developer login and creating a simple chat bot are 
+easily found on the Discord developer site.
+
+MUTHURbot supports a small set of commands including:
 
   * !roll   -- Roll task and stress dice
   * !roster -- Manage the current PC and monster roster
@@ -33,7 +37,7 @@ Navigate to the code directory and enter the command:
 
 `npm install`
 
-This will install the MUTHURbot dependencies into the code directory.
+This will install the MUTHURbot dependencies into the MUTHURbot directory.
 
 ## Set up your Discord environment
 MUTHURbot expends to find a file '.env' in the code directory. The file 
@@ -41,9 +45,9 @@ should have only one line and look like:
 
 `DISCORD_TOKEN=<your bot token here>`
 
-Use the Discord developer portal to create your 
-version of MUTHURbot and generate a bot token. There are many good instructional 
-sites on the internet for this!
+Use the Discord developer portal to create your version of MUTHURbot and 
+generate a bot token. There are many good instructional sites on the 
+internet for this.
 
 ## Create your image assets
 MUTHURbot looks for an 'assets/' directory. From there it will pull dice images 
