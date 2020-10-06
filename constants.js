@@ -1,3 +1,4 @@
+const GMROLE = "Alien-GM";
 const STATE = {
     IDLE: 0, 
     WAITING_REMOVE: 1
@@ -12,6 +13,7 @@ const IMAGESIZE = {
 }
 
 module.exports = {
+    GMROLE, 
     STATE, 
     MAX_DICE, 
     DICETYPE, 

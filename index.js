@@ -8,8 +8,32 @@ const cmdTest = require('./cmd-test');
 const cmdRoll = require('./cmd-roll');
 const cmdRoster = require('./cmd-roster');
 const cmdInit = require('./cmd-init');
+const constants = require('./constants');
 
 var state = STATE.IDLE;
+
+var commands = [
+  {
+    name: "test",
+    desc: "Run a large-volume die roll and inspect the results!",
+    example: "!test d6 1000000",
+    args: [
+      {
+        name: "d6",
+        desc: "Test roll d6's",
+        example: "!test d6 1000000"
+      }
+    ]
+  }
+]
+
+function checkAlienGM(discordMessage) {
+  if (!discordMessage.member.roles.cache.some(role => role.name === constants.GMROLE)) {
+    discordMessage.channel.send("You must have the GM role to perform this action.");
+    return false;
+  }
+  return true;
+}
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -23,20 +47,24 @@ client.on('message', msg => {
   } else if (args[0] === "!roll") {
     cmdRoll.roll(msg, args.splice(1));
   } else if (msg.content.substr(0, 5) === "!init") {
-    if (args[1] === 'roll') {
-      cmdInit.roll(msg);
+    if (checkAlienGM(msg)) {
+      if (args[1] === 'roll') {
+        cmdInit.roll(msg);
+      }
     }
   } else if (args[0] === "!roster") {
-    if (args[1] === 'add' && args.length === 3) {
-      cmdRoster.add(msg, args.splice(2));
-    } else if (args[1] === 'add' && args.length === 2) {
-      cmdRoster.addMonster(msg);
-    } else if (args.length === 1 || args[1] === 'list') {
-      cmdRoster.listRoster(msg);
-    } else if (args[1] === 'remove') {
-      cmdRoster.remove(msg);
-    } else if (args[1] === 'reset') {
-      cmdRoster.reset(msg);
+    if (checkAlienGM(msg)) {
+      if (args[1] === 'add' && args.length === 3) {
+        cmdRoster.add(msg, args.splice(2));
+      } else if (args[1] === 'add' && args.length === 2) {
+        cmdRoster.addMonster(msg);
+      } else if (args.length === 1 || args[1] === 'list') {
+        cmdRoster.listRoster(msg);
+      } else if (args[1] === 'remove') {
+        cmdRoster.remove(msg);
+      } else if (args[1] === 'reset') {
+        cmdRoster.reset(msg);
+      }
     }
   }
 });
