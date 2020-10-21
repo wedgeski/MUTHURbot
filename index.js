@@ -6,6 +6,7 @@ const client = new Client();
 const assets = require('./assets');
 const cmdTest = require('./cmd-test');
 const cmdRoll = require('./cmd-roll');
+const cmdPush = require('./cmd-push');
 const cmdRoster = require('./cmd-roster');
 const cmdInit = require('./cmd-init');
 
@@ -22,6 +23,8 @@ client.on('message', msg => {
     cmdTest.test(msg, args.splice(1));
   } else if (args[0] === "!roll") {
     cmdRoll.roll(msg, args.splice(1));
+  } else if (args[0] === "!push") {
+    cmdPush.push(msg);
   } else if (msg.content.substr(0, 5) === "!init") {
     if (args[1] === 'roll') {
       cmdInit.roll(msg);

@@ -3,6 +3,7 @@ const { MAX_DICE, DICETYPE } = require('./constants');
 const discordLib = require('./discord-lib');
 const droll = require('droll');
 const { createCanvas } = require('canvas')
+const cmdPush = require('./cmd-push');
 
 function validateAndRoll(diceType, diceCodeString, dice) {
     if (lib.isNumeric(dice)) {
@@ -70,6 +71,7 @@ exports.roll = function (discordMessage, args) {
             discordLib.showError(discordMessage, e);
             return;
         }
+        cmdPush.setRoll(discordMessage, skillDiceArray.length, stressDiceArray.length);
         //console.log("skillDiceArray: " + skillDiceArray);
         var canvas = createDiceCanvas(skillDiceArray, stressDiceArray);
         //console.log(canvas);

@@ -10,35 +10,43 @@ const ENTITYTYPE = {
 global.roster = [
     {
         type: ENTITYTYPE.PLAYER,
-        name: 'Matt',
-        label: 'Holroyd (Matt)',
-        initiative: 0,
-        actions: 1,
-        id: 1
-    },
-    {
-        type: ENTITYTYPE.PLAYER,
-        name: 'Jo',
-        label: 'Macwhirr (Jo)',
-        initiative: 0,
-        actions: 1,
-        id: 2
-    },
-    {
-        type: ENTITYTYPE.PLAYER,
         name: 'Al',
-        label: 'Sigg (Alan)',
+        label: 'Hammer (Alan)',
         initiative: 0,
         actions: 1,
         id: 3
     },
     {
         type: ENTITYTYPE.PLAYER,
+        name: 'Jo',
+        label: 'Dante (Jo)',
+        initiative: 0,
+        actions: 1,
+        id: 2
+    },
+    {
+        type: ENTITYTYPE.PLAYER,
         name: 'Marc',
-        label: 'Hirsch (Marc)',
+        label: 'Mason (Marc)',
         initiative: 0,
         actions: 1,
         id: 4
+    },
+    {
+        type: ENTITYTYPE.PLAYER,
+        name: 'Matt',
+        label: 'Zmijewski (Matt)',
+        initiative: 0,
+        actions: 1,
+        id: 1
+    },
+    {
+        type: ENTITYTYPE.PLAYER,
+        name: 'GM',
+        label: 'Chaplain (GM)',
+        initiative: 0,
+        actions: 1,
+        id: 5
     }
 ]
 
