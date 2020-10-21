@@ -26,7 +26,7 @@ var push = function (discordMessage) {
             // ^^ This will implicitly call setRoll BTW
             thisUser.pushed = true;
         } else {
-            discordLib.showError(discordMessage, "Nope, you've already pushed this roll.");
+            discordLib.showError(discordMessage, "Nope, you've already pushed your last roll.");
         }
     } else {
         discordLib.showError(discordMessage, "You haven't rolled yet!");
