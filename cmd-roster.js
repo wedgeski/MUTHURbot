@@ -117,8 +117,9 @@ var loadRosterAtIndex = function (discordMessage, index) {
     var path = ROSTERS_DIR + "/" + availableRosters[index];
     //console.log("Loading roster at index " + index + ": " + path);
     try {
-        loadedRoster = require(path);
-        roster = loadedRoster.members;
+        var loadedRoster = require(path);
+        //console.log("loaded roster has " + loadedRoster.members.length + " members")
+        roster = loadedRoster.members.slice();
         roster.forEach((element, index) => {
             element.type = ENTITYTYPE.PLAYER;
             element.initiative = 0;
