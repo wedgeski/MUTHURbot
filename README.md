@@ -31,8 +31,9 @@ These instructions assume you already have a working instance of Node.js and npm
 Once you've cloned the code, you'll need to do the following:
 
   1. Install dependencies
-  1. Set up your Discord environment
-  1. Create your image assets
+  2. Set up your Discord environment
+  3. Create your image assets
+  4. Create your PC roster
 
 ## Install dependencies
 Navigate to the code directory and enter the command:
@@ -48,8 +49,7 @@ should have only one line and look like:
 `DISCORD_TOKEN=<your bot token here>`
 
 Use the Discord developer portal to create your version of MUTHURbot and 
-generate a bot token. There are many good instructional sites on the 
-internet for this.
+generate a bot token. There are many good sources on the internet for this.
 
 ## Create your image assets
 MUTHURbot looks for an 'assets/' directory. From there it will pull dice images 
@@ -61,3 +61,23 @@ dice images in a matter of minutes using the simplest of tools; at their most
 basic, they are 64x64px JPEGs with the following naming conventions:
 
 `skill_[1-6]_64px.jpg` and `stress_[1-6]_64px.jpg`
+
+## Create your stored rosters
+MUTHRbot will search for PC rosters within the 'rosters/' directory.
+
+A roster resource looks like this:
+```javascript
+{
+    "name": "Sample roster",
+    "members": [
+        {
+            "name": "Bob",
+            "label": "Smith (Bob)"
+        },
+        {
+            "name": "Andrea",
+            "label": "Jones (Andrea)"
+        }
+}
+```
+Use '!roster load' to load one of the available rosters into MUTHRbot.

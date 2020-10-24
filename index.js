@@ -4,7 +4,6 @@ const { ASSETS_DIR, ROSTERS_DIR } = require('./constants');
 const { Client } = require('discord.js');
 const client = new Client();
 const assets = require(ASSETS_DIR);
-const rosters = require(ROSTERS_DIR);
 const cmdTest = require('./cmd-test');
 const cmdRoll = require('./cmd-roll');
 const cmdPush = require('./cmd-push');
@@ -38,7 +37,6 @@ function checkAlienGM(discordMessage) {
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   assets.load();
-  rosters.load();
 });
 
 client.on('message', msg => {

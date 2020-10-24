@@ -1,6 +1,7 @@
 const lib = require('./lib');
 const discordLib = require('./discord-lib');
 const { ROSTERS_DIR } = require('./constants');
+const rosters = require(ROSTERS_DIR);
 
 const ENTITYTYPE = {
     PLAYER: 0,
@@ -9,50 +10,6 @@ const ENTITYTYPE = {
 
 global.roster = [];
 
-/*
-global.roster = [
-    {
-        type: ENTITYTYPE.PLAYER,
-        name: 'Al',
-        label: 'Hammer (Alan)',
-        initiative: 0,
-        actions: 1,
-        id: 3
-    },
-    {
-        type: ENTITYTYPE.PLAYER,
-        name: 'Jo',
-        label: 'Dante (Jo)',
-        initiative: 0,
-        actions: 1,
-        id: 2
-    },
-    {
-        type: ENTITYTYPE.PLAYER,
-        name: 'Marc',
-        label: 'Mason (Marc)',
-        initiative: 0,
-        actions: 1,
-        id: 4
-    },
-    {
-        type: ENTITYTYPE.PLAYER,
-        name: 'Matt',
-        label: 'Zmijewski (Matt)',
-        initiative: 0,
-        actions: 1,
-        id: 1
-    },
-    {
-        type: ENTITYTYPE.PLAYER,
-        name: 'GM',
-        label: 'Chaplain (GM)',
-        initiative: 0,
-        actions: 1,
-        id: 5
-    }
-]
-*/
 const MONSTERS = [
     {
         type: ENTITYTYPE.MONSTER,
@@ -127,13 +84,19 @@ var listRoster = function (discordMessage) {
     }
 }
 
-var loadRosterAtIndex = function(discordMessage, index) {
+var loadRosterAtIndex = function (discordMessage, index) {
     var path = ROSTERS_DIR + "/" + availableRosters[index];
     //console.log("Loading roster at index " + index + ": " + path);
     try {
         loadedRoster = require(path);
-        //console.log(loadedRoster);
         roster = loadedRoster.members;
+        roster.forEach((element, index) => {
+            element.type = ENTITYTYPE.PLAYER;
+            element.initiative = 0;
+            element.actions = 1;
+            element.id = index + 1;
+        });
+        //console.log(loadedRoster);
         listRoster(discordMessage);
     } catch (e) {
         console.log(e);
@@ -240,7 +203,8 @@ var reset = function (discordMessage) {
 }
 
 var load = function (discordMessage) {
-    discordMessage.channel.send("Select which roster to load:");
+    rosters.load();
+    discordMessage.channel.send("Select which roster to load (will overwrite current roster):");
     listAvailablerosters(discordMessage);
     discordLib.awaitAnswerFromAuthor(discordMessage, answer => {
         if (lib.isNumeric(answer)) {
