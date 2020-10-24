@@ -84,6 +84,35 @@ var listRoster = function (discordMessage) {
     }
 }
 
+// Filters the roster for unique id entities.
+// Xenomorphs may have more than one attack in the roster and should 
+// therefore be treated as one entity.
+var makeUniqueRoster = function () {
+    var dedup = [];
+    var entities = [];
+    roster.forEach((element, i) => {
+        if (!dedup.includes(element.id)) {
+            dedup.push(element.id);
+            entities.push(element);
+        }
+    })
+    return entities;
+}
+
+// As listRoster, except only lists the first roster entry per entity ID.
+var listRosterUnique = function (discordMessage) {
+    // There's probably a good ES6 way of deriving a unique set 
+    // by filtering on an object property. Probably.
+    if (checkRoster(discordMessage)) {
+        var message = "";
+        var entities = makeUniqueRoster();
+        entities.forEach((element, i) => {
+            message = message.concat((i + 1) + ". " + element.label + "\r\n");
+        })
+        discordLib.sendMessageEmbed(discordMessage, "Current roster:", message);
+    }
+}
+
 var loadRosterAtIndex = function (discordMessage, index) {
     var path = ROSTERS_DIR + "/" + availableRosters[index];
     //console.log("Loading roster at index " + index + ": " + path);
@@ -126,6 +155,10 @@ var listMonsters = function (discordMessage) {
     discordLib.sendMessageEmbed(discordMessage, "Available monsters:", message);
 }
 
+var getNumMonstersWithType = function(name) {
+    return makeUniqueRoster().filter (entity => entity.name === name).length;
+}
+
 var getNextIdOfType = function (name) {
     var rc = 0;
     roster.forEach((entity) => {
@@ -138,12 +171,17 @@ var getNextIdOfType = function (name) {
 
 var addMonsterIndex = function (discordMessage, index) {
     if (index >= 0 && index < MONSTERS.length) {
-        var id = getNextIdOfType(MONSTERS[index].name);
+        var nextMonsterId = getNumMonstersWithType(MONSTERS[index].name) + 1;
+        var nextId = roster.length + nextMonsterId;
+        //console.log("New xenomorph has id: " + nextId);
         for (i = 0; i < MONSTERS[index].actions; i++) {
+            // When adding a monster, we add a number of entities equal 
+            // to its number of attacks. Each of these entities has the 
+            // same id.
             // JS pattern for shallow-cloning an object
             var newActor = Object.assign({}, MONSTERS[index]);
-            newActor.id = id;
-            newActor.label = MONSTERS[index].name + " " + newActor.id;
+            newActor.id = nextId;
+            newActor.label = MONSTERS[index].name + " " + nextMonsterId;
             newActor.actions = 1;
             roster.push(newActor);
         }
@@ -170,24 +208,34 @@ var add = function (discordMessage, args) {
     exports.listRoster(discordMessage);
 }
 
-var remove = function (discordMessage) {
-    if (checkRoster(discordMessage)) {
-        discordMessage.channel.send("Select which member to remove:");
-        exports.listRoster(discordMessage);
-        discordLib.awaitAnswerFromAuthor(discordMessage, answer => {
-            if (lib.isNumeric(answer)) {
-                exports.removeAt(discordMessage, answer - 1);
-            }
-        }, "Tired of waiting! Try again.")
+// This function works on the UNIQUE roster returned from 
+// makeUniqueRoster(), not the full roster which contains 
+// multiple entries for xenomorphs with multiple attacks.
+var removeAt = function (discordMessage, index) {
+    var uniqueEntities = makeUniqueRoster();
+    console.log("removeAt called with index " + index);
+    //console.log("uniqueEntities: " + uniqueEntities);
+    if (lib.isNumeric(index) && index >= 0 && index < uniqueEntities.length) {
+        discordMessage.channel.send("Removed [" + uniqueEntities[index].label + "] from the roster");
+        // Remove all entities with this id from the actual roster
+        var toBeRemoved = roster.filter(entity => entity.id === uniqueEntities[index].id);
+        roster = roster.filter( function(element) { 
+            return toBeRemoved.indexOf(element) < 0;
+          });
+        //console.log("Above to remove " + toBeRemoved);
     }
 }
 
-var removeAt = function (discordMessage, index) {
+// Lists UNIQUE entities for the author to choose from.
+var remove = function (discordMessage) {
     if (checkRoster(discordMessage)) {
-        if (lib.isNumeric(index) && index >= 0 && index < (roster.length - 1)) {
-            discordMessage.channel.send("Removed [" + roster[index].name + "] from the roster");
-            roster.splice(index, 1);
-        }
+        discordMessage.channel.send("Select which member to remove:");
+        listRosterUnique(discordMessage);
+        discordLib.awaitAnswerFromAuthor(discordMessage, answer => {
+            if (lib.isNumeric(answer)) {
+                removeAt(discordMessage, answer - 1);
+            }
+        }, "Tired of waiting! Try again.")
     }
 }
 
@@ -217,6 +265,5 @@ exports.listRoster = listRoster;
 exports.add = add;
 exports.addMonster = addMonster;
 exports.remove = remove;
-exports.removeAt = removeAt;
 exports.reset = reset;
 exports.load = load;
