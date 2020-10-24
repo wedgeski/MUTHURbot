@@ -1,12 +1,15 @@
 const lib = require('./lib');
-const { STATE } = require('./constants');
 const discordLib = require('./discord-lib');
+const { ROSTERS_DIR } = require('./constants');
 
 const ENTITYTYPE = {
     PLAYER: 0,
     MONSTER: 1
 }
 
+global.roster = [];
+
+/*
 global.roster = [
     {
         type: ENTITYTYPE.PLAYER,
@@ -49,7 +52,7 @@ global.roster = [
         id: 5
     }
 ]
-
+*/
 const MONSTERS = [
     {
         type: ENTITYTYPE.MONSTER,
@@ -93,6 +96,17 @@ const MONSTERS = [
     },
 ]
 
+var checkRoster = function (discordMessage) {
+    if (roster.length === 0) {
+        discordLib.showError(
+            discordMessage, "You haven't loaded a roster or added any players!");
+        discordLib.showError(
+            discordMessage, "User '!roster load' or '!roster add' first.");
+        return false;
+    }
+    return true;
+}
+
 var rosterFactory = function (name, label, initiative, actions, id) {
     return {
         name: name,
@@ -104,11 +118,41 @@ var rosterFactory = function (name, label, initiative, actions, id) {
 }
 
 var listRoster = function (discordMessage) {
+    if (checkRoster(discordMessage)) {
+        var message = "";
+        roster.forEach((element, i) => {
+            message = message.concat((i + 1) + ". " + element.label + "\r\n");
+        })
+        discordLib.sendMessageEmbed(discordMessage, "Current roster:", message);
+    }
+}
+
+var loadRosterAtIndex = function(discordMessage, index) {
+    var path = ROSTERS_DIR + "/" + availableRosters[index];
+    //console.log("Loading roster at index " + index + ": " + path);
+    try {
+        loadedRoster = require(path);
+        //console.log(loadedRoster);
+        roster = loadedRoster.members;
+        listRoster(discordMessage);
+    } catch (e) {
+        console.log(e);
+        discordLib.showError(discordMessage, "Unable to load specified roster.")
+    }
+}
+
+var listAvailablerosters = function (discordMessage) {
     var message = "";
-    roster.forEach((element, i) => {
-        message = message.concat((i + 1) + ". " + element.label + "\r\n");
+    availableRosters.forEach((element, i) => {
+        var thisRoster = require(ROSTERS_DIR + "/" + element);
+        message = message.concat(
+            (i + 1) +
+            ". " +
+            thisRoster.name +
+            " (" + thisRoster.members.length + " members)" +
+            "\r\n");
     })
-    discordLib.sendMessageEmbed(discordMessage, "Current roster:", message);
+    discordLib.sendMessageEmbed(discordMessage, "Available rosters:", message);
 }
 
 var listMonsters = function (discordMessage) {
@@ -145,13 +189,15 @@ var addMonsterIndex = function (discordMessage, index) {
 }
 
 var addMonster = function (discordMessage) {
-    discordMessage.channel.send("Select monster to add:");
-    listMonsters(discordMessage);
-    discordLib.awaitAnswerFromAuthor(discordMessage, answer => {
-        if (lib.isNumeric(answer)) {
-            addMonsterIndex(discordMessage, answer - 1);
-        }
-    }, "Tired of waiting! Try again.")
+    if (checkRoster(discordMessage)) {
+        discordMessage.channel.send("Select monster to add:");
+        listMonsters(discordMessage);
+        discordLib.awaitAnswerFromAuthor(discordMessage, answer => {
+            if (lib.isNumeric(answer)) {
+                addMonsterIndex(discordMessage, answer - 1);
+            }
+        }, "Tired of waiting! Try again.")
+    }
 }
 
 var add = function (discordMessage, args) {
@@ -162,29 +208,45 @@ var add = function (discordMessage, args) {
 }
 
 var remove = function (discordMessage) {
-    discordMessage.channel.send("Select which member to remove:");
-    exports.listRoster(discordMessage);
-    discordLib.awaitAnswerFromAuthor(discordMessage, answer => {
-        if (lib.isNumeric(answer)) {
-            exports.removeAt(discordMessage, answer - 1);
-        }
-    }, "Tired of waiting! Try again.")
+    if (checkRoster(discordMessage)) {
+        discordMessage.channel.send("Select which member to remove:");
+        exports.listRoster(discordMessage);
+        discordLib.awaitAnswerFromAuthor(discordMessage, answer => {
+            if (lib.isNumeric(answer)) {
+                exports.removeAt(discordMessage, answer - 1);
+            }
+        }, "Tired of waiting! Try again.")
+    }
 }
 
 var removeAt = function (discordMessage, index) {
-    if (lib.isNumeric(index) && index >= 0 && index < (roster.length - 1)) {
-        discordMessage.channel.send("Removed [" + roster[index].name + "] from the roster");
-        roster.splice(index, 1);
+    if (checkRoster(discordMessage)) {
+        if (lib.isNumeric(index) && index >= 0 && index < (roster.length - 1)) {
+            discordMessage.channel.send("Removed [" + roster[index].name + "] from the roster");
+            roster.splice(index, 1);
+        }
     }
 }
 
 var reset = function (discordMessage) {
-    for (i=roster.length - 1; i >= 0; i--) {
-        if (roster[i].type === ENTITYTYPE.MONSTER) {
-            roster.splice(i, 1);       
+    if (checkRoster(discordMessage)) {
+        for (i = roster.length - 1; i >= 0; i--) {
+            if (roster[i].type === ENTITYTYPE.MONSTER) {
+                roster.splice(i, 1);
+            }
         }
+        exports.listRoster(discordMessage);
     }
-    exports.listRoster(discordMessage);
+}
+
+var load = function (discordMessage) {
+    discordMessage.channel.send("Select which roster to load:");
+    listAvailablerosters(discordMessage);
+    discordLib.awaitAnswerFromAuthor(discordMessage, answer => {
+        if (lib.isNumeric(answer)) {
+            loadRosterAtIndex(discordMessage, answer - 1);
+        }
+    }, "Tired of waiting! Try again.")
 }
 
 exports.listRoster = listRoster;
@@ -193,3 +255,4 @@ exports.addMonster = addMonster;
 exports.remove = remove;
 exports.removeAt = removeAt;
 exports.reset = reset;
+exports.load = load;

@@ -1,17 +1,16 @@
 require('dotenv').config();
 const lib = require('./lib');
-const { STATE } = require('./constants');
+const { ASSETS_DIR, ROSTERS_DIR } = require('./constants');
 const { Client } = require('discord.js');
 const client = new Client();
-const assets = require('./assets');
+const assets = require(ASSETS_DIR);
+const rosters = require(ROSTERS_DIR);
 const cmdTest = require('./cmd-test');
 const cmdRoll = require('./cmd-roll');
 const cmdPush = require('./cmd-push');
 const cmdRoster = require('./cmd-roster');
 const cmdInit = require('./cmd-init');
 const constants = require('./constants');
-
-var state = STATE.IDLE;
 
 var commands = [
   {
@@ -39,6 +38,7 @@ function checkAlienGM(discordMessage) {
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   assets.load();
+  rosters.load();
 });
 
 client.on('message', msg => {
@@ -57,7 +57,9 @@ client.on('message', msg => {
     }
   } else if (args[0] === "!roster") {
     if (checkAlienGM(msg)) {
-      if (args[1] === 'add' && args.length === 3) {
+      if (args[1] === 'load') {
+        cmdRoster.load(msg);
+      } else if (args[1] === 'add' && args.length === 3) {
         cmdRoster.add(msg, args.splice(2));
       } else if (args[1] === 'add' && args.length === 2) {
         cmdRoster.addMonster(msg);

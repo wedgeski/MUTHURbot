@@ -1,5 +1,6 @@
 #MUTHURbot specific
 assets/
+rosters/
 .env
 .randnotes
 

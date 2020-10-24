@@ -1,5 +1,4 @@
 const lib = require('./lib');
-const { STATE } = require('./constants');
 const discordLib = require('./discord-lib');
 const cmdRoster = require('./cmd-roster');
 

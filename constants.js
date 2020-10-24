@@ -1,8 +1,6 @@
 const GMROLE = "Alien-GM";
-const STATE = {
-    IDLE: 0, 
-    WAITING_REMOVE: 1
-}
+const ASSETS_DIR = "./assets";
+const ROSTERS_DIR = "./rosters";
 const MAX_DICE = 20;
 const DICETYPE = {
     TASK: 'skill',
@@ -14,7 +12,8 @@ const IMAGESIZE = {
 
 module.exports = {
     GMROLE, 
-    STATE, 
+    ASSETS_DIR, 
+    ROSTERS_DIR, 
     MAX_DICE, 
     DICETYPE, 
     IMAGESIZE, 

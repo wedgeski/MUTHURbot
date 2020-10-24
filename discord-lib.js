@@ -27,7 +27,7 @@ var sendMessageEmbedWithCanvas = function (discordMessage, canvas) {
 }
 
 var awaitAnswerFromAuthor = function (discordMessage, onAnswer, errormsg) {
-    console.log(errormsg);
+    //console.log(errormsg);
     discordMessage.channel.awaitMessages(m => m.author.id == discordMessage.author.id,
         { max: 1, time: 10000 }).then(collected => {
             // only accept messages by the user who sent the command
