@@ -10,6 +10,7 @@ easily found on the Discord developer site.
 MUTHURbot supports a small set of commands including:
 
   * !roll   -- Roll task and stress dice
+  * !push   -- Re-rolls the previous roll with an extra Stress die (once only)
   * !roster -- Manage the current PC and monster roster
   * !init   -- Manage a simple initiative order for the current roster
 
@@ -17,6 +18,7 @@ MUTHURbot supports a small set of commands including:
 
   * !roll 4                   -- Roll 4 task dice
   * !roll 4+1                 -- Roll 4 task dice with 1 stress die
+  * !push                     -- Pushes the previous roll
   * !roster                   -- List the current roster
   * !roster add <entityname>  -- Add <entityname> to the roster (this is assumed to be a PC)
   * !roster add               -- List monsters and select to add

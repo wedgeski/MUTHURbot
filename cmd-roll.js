@@ -53,7 +53,7 @@ exports.roll = function (discordMessage, args) {
     // !roll 4+1 -- Roll a task with four skill dice and a stress die
     if (args != undefined && args.length >= 1) {
         var diceCodeString = args[0].trim().replace(' ', '');
-        console.log(diceCodeString)
+        //console.log(diceCodeString)
         var skillDiceArray = [];
         var stressDiceArray = [];
         try {
@@ -71,7 +71,7 @@ exports.roll = function (discordMessage, args) {
             discordLib.showError(discordMessage, e);
             return;
         }
-        cmdPush.setRoll(discordMessage, skillDiceArray.length, stressDiceArray.length);
+        cmdPush.setRoll(discordMessage, skillDiceArray, stressDiceArray);
         //console.log("skillDiceArray: " + skillDiceArray);
         var canvas = createDiceCanvas(skillDiceArray, stressDiceArray);
         //console.log(canvas);
