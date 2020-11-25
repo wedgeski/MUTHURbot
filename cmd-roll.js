@@ -45,12 +45,14 @@ function createDiceCanvas(skillDiceArray, stressDiceArray) {
     return canvas;
 }
 
-exports.roll = function (discordMessage, args) {
+exports.roll = function (discordMessage, args, task, stress) {
     // !roll
     // Roll a task. Whitespace is stripped
     // E.g.
     // !roll 4 -- Roll a task with four skill dice
     // !roll 4+1 -- Roll a task with four skill dice and a stress die
+    // If 'task' or 'stress' are defined, the results get appended to 
+    //   those arrays (used for pushes).
     if (args != undefined && args.length >= 1) {
         var diceCodeString = args[0].trim().replace(' ', '');
         //console.log(diceCodeString)
@@ -70,6 +72,14 @@ exports.roll = function (discordMessage, args) {
             //console.log(e);
             discordLib.showError(discordMessage, e);
             return;
+        }
+        if (typeof task !== 'undefined') {
+            //console.log("Concat task " + task + " to roll " + skillDiceArray);
+            skillDiceArray = task.concat(skillDiceArray);
+        }
+        if (typeof stress !== 'undefined') {
+            //console.log("Concat stress " + stress + " to roll " + stressDiceArray);
+            stressDiceArray = stress.concat(stressDiceArray);
         }
         cmdPush.setRoll(discordMessage, skillDiceArray, stressDiceArray);
         //console.log("skillDiceArray: " + skillDiceArray);

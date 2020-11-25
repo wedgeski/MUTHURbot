@@ -19,10 +19,18 @@ var push = function (discordMessage) {
     if (thisUser.lastSkill.length != 0) {
         if (thisUser.pushed === false) {
             if (!lib.diceArrayHasVal(thisUser.lastStress, 1)) {
+                var previousTaskSuccesses = thisUser.lastSkill.filter(function(e) {
+                    return e === 6;
+                });
+                var previousStressSuccesses = thisUser.lastStress.filter(function(e) {
+                    return e === 6;
+                });
                 // This is awful! How to create an anonynous initialised array?
                 var args = [];
-                args.push(thisUser.lastSkill.length + "+" + (thisUser.lastStress.length + 1));
-                cmdRoll.roll(discordMessage, args);
+                args.push(thisUser.lastSkill.length - previousTaskSuccesses.length + 
+                    "+" + 
+                    (thisUser.lastStress.length - previousStressSuccesses.length + 1));
+                cmdRoll.roll(discordMessage, args, previousTaskSuccesses, previousStressSuccesses);
                 // ^^ This will implicitly call setRoll BTW
                 thisUser.pushed = true;
             } else {
