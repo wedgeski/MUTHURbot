@@ -1,5 +1,7 @@
 # MUTHURbot
-This is a simple bot for helping to run the Free League 'Alien' RPG on a Discord server.
+This is a simple and UNOFFICIAL bot for helping to run the Free League 'Alien' RPG on a Discord server.
+
+To be clear, this is a personal project, and this code is published with permission from Free League.
 
 ![Example dice roll](/images/roll_example.png)
 
